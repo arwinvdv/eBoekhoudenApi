@@ -20,7 +20,7 @@ class RelationSearch {
      */
     public function __construct($relationSearch = null)
     {
-        if(strlen($relationSearch) < 255 && strlen($relationSearch) > 0) {
+        if(mb_strlen($relationSearch) < 255 && mb_strlen($relationSearch) > 0) {
             $this->relationSearch = $relationSearch;
             return;
         }

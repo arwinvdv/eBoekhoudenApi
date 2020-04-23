@@ -20,7 +20,7 @@ class InvoiceNumber {
      */
     public function __construct($invoiceNumber)
     {
-        if(strlen($invoiceNumber) < 51 || $invoiceNumber === null) {
+        if(mb_strlen($invoiceNumber) < 51 || $invoiceNumber === null) {
             $this->invoiceNumber = $invoiceNumber;
             return;
         }

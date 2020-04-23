@@ -94,7 +94,7 @@ class Mutation
      */
     public function setAccount($account)
     {
-        if(strlen($account) > 10) {
+        if(mb_strlen($account) > 10) {
             throw new \Exception('Account may not exceed the length of 10 characters');
         }
         $this->account = $account;
@@ -108,7 +108,7 @@ class Mutation
      */
     public function setRelationCode($relationCode)
     {
-        if(strlen($relationCode) > 15) {
+        if(mb_strlen($relationCode) > 15) {
             throw new \Exception('RelationCode may not exceed the length of 15 characters');
         }
         $this->relationCode = $relationCode;
@@ -122,7 +122,7 @@ class Mutation
      */
     public function setInvoiceNumber($invoiceNumber)
     {
-        if(strlen($invoiceNumber) > 50) {
+        if(mb_strlen($invoiceNumber) > 50) {
             throw new \Exception('InvoiceNumber may not exceed the length of 50 characters');
         }
         $this->invoiceNumber = $invoiceNumber;
@@ -136,7 +136,7 @@ class Mutation
      */
     public function setBookNumber($bookNumber)
     {
-        if(strlen($bookNumber) > 50) {
+        if(mb_strlen($bookNumber) > 50) {
             throw new \Exception('BookNumber may not exceed the length of 50 characters');
         }
         $this->bookNumber = $bookNumber;
@@ -150,7 +150,7 @@ class Mutation
      */
     public function setDescription($description)
     {
-        if(strlen($description) > 200) {
+        if(mb_strlen($description) > 200) {
             throw new \Exception('Description may not exceed the length of 200 characters');
         }
         $this->description = $description;
@@ -164,7 +164,7 @@ class Mutation
      */
     public function setTermOfPayment($termOfPayment)
     {
-        if(strlen($termOfPayment) > 4) {
+        if(mb_strlen($termOfPayment) > 4) {
             throw new \Exception('TermOfPayment may not exceed the length of 4 characters');
         }
         $this->termOfPayment = $termOfPayment;
@@ -209,7 +209,7 @@ class Mutation
      */
     public function addMutationLine(float $amount, int $vatPercentage, string $vatCode, string $counterAccount, int $costCenterId)
     {
-        if(strlen($counterAccount) > 10) {
+        if(mb_strlen($counterAccount) > 10) {
             throw new \Exception('CounterACCOUNT may not exceed the length of 10 characters');
         }
 

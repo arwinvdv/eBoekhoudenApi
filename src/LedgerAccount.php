@@ -29,7 +29,7 @@ class LedgerAccount
      */
     public function setCode($code)
     {
-        if(strlen($code) > 10) {
+        if(mb_strlen($code) > 10) {
             throw new \Exception('Code may not exceed the length of 10 characters');
         }
         $this->code = $code;
@@ -43,7 +43,7 @@ class LedgerAccount
      */
     public function setDescription($description)
     {
-        if(strlen($description) > 50) {
+        if(mb_strlen($description) > 50) {
             throw new \Exception('Description may not exceed the length of 50 characters');
         }
         $this->description = $description;

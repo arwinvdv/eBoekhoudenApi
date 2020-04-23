@@ -20,7 +20,7 @@ class AccountLedgerCategory {
      */
     public function __construct($accountLedgerCategory = null)
     {
-        if(strlen($accountLedgerCategory) < 11 || $accountLedgerCategory === null) {
+        if(mb_strlen($accountLedgerCategory) < 11 || $accountLedgerCategory === null) {
             $this->accountLedgerCategory = $accountLedgerCategory;
             return;
         }

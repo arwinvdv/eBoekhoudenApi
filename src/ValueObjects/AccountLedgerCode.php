@@ -20,7 +20,7 @@ class AccountLedgerCode {
      */
     public function __construct($accountLedgerCode = null)
     {
-        if(strlen($accountLedgerCode) < 11 || $accountLedgerCode === null) {
+        if(mb_strlen($accountLedgerCode) < 11 || $accountLedgerCode === null) {
             $this->accountLedgerCode = $accountLedgerCode;
             return;
         }

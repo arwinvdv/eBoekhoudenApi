@@ -249,7 +249,7 @@ class Relation
      */
     public function setAddress($address)
     {
-        if(strlen($address) > 150) {
+        if(mb_strlen($address) > 150) {
             throw new \Exception('Address may not exceed the length of 150 characters');
         }
         $this->address = $address;
@@ -263,7 +263,7 @@ class Relation
      */
     public function setPostalcode($postalcode)
     {
-        if(strlen($postalcode) > 50) {
+        if(mb_strlen($postalcode) > 50) {
             throw new \Exception('Postalcode may not exceed the length of 50 characters');
         }
         $this->postalcode = $postalcode;
@@ -277,7 +277,7 @@ class Relation
      */
     public function setCity($city)
     {
-        if(strlen($city) > 50) {
+        if(mb_strlen($city) > 50) {
             throw new \Exception('City may not exceed the length of 50 characters');
         }
         $this->city = $city;
@@ -291,7 +291,7 @@ class Relation
      */
     public function setCountry($country)
     {
-        if(strlen($country) > 50) {
+        if(mb_strlen($country) > 50) {
             throw new \Exception('Country may not exceed the length of 50 characters');
         }
         $this->country = $country;
@@ -305,7 +305,7 @@ class Relation
      */
     public function setAddress2($address2)
     {
-        if(strlen($address2) > 150) {
+        if(mb_strlen($address2) > 150) {
             throw new \Exception('Address2 may not exceed the length of 150 characters');
         }
         $this->address2 = $address2;
@@ -319,7 +319,7 @@ class Relation
      */
     public function setPostalcode2($postalcode2)
     {
-        if(strlen($postalcode2) > 50) {
+        if(mb_strlen($postalcode2) > 50) {
             throw new \Exception('Postalcode2 may not exceed the length of 50 characters');
         }
         $this->postalcode2 = $postalcode2;
@@ -333,7 +333,7 @@ class Relation
      */
     public function setCity2($city2)
     {
-        if(strlen($city2) > 50) {
+        if(mb_strlen($city2) > 50) {
             throw new \Exception('City2 may not exceed the length of 50 characters');
         }
         $this->city2 = $city2;
@@ -347,7 +347,7 @@ class Relation
      */
     public function setCountry2($country2)
     {
-        if(strlen($country2) > 50) {
+        if(mb_strlen($country2) > 50) {
             throw new \Exception('Country2 may not exceed the length of 50 characters');
         }
         $this->country2 = $country2;
@@ -361,7 +361,7 @@ class Relation
      */
     public function setPhone($phone)
     {
-        if(strlen($phone) > 50) {
+        if(mb_strlen($phone) > 50) {
             throw new \Exception('Phone may not exceed the length of 50 characters');
         }
         $this->phone = $phone;
@@ -375,7 +375,7 @@ class Relation
      */
     public function setMobile($mobile)
     {
-        if(strlen($mobile) > 50) {
+        if(mb_strlen($mobile) > 50) {
             throw new \Exception('Mobile may not exceed the length of 50 characters');
         }
         $this->mobile = $mobile;
@@ -389,7 +389,7 @@ class Relation
      */
     public function setFax($fax)
     {
-        if(strlen($fax) > 50) {
+        if(mb_strlen($fax) > 50) {
             throw new \Exception('Fax may not exceed the length of 50 characters');
         }
         $this->fax = $fax;
@@ -403,7 +403,7 @@ class Relation
      */
     public function setEmail($email)
     {
-        if(strlen($email) > 150) {
+        if(mb_strlen($email) > 150) {
             throw new \Exception('Email may not exceed the length of 150 characters');
         }
         $this->email = $email;
@@ -457,7 +457,7 @@ class Relation
      */
     public function setVatregistrationnumber($vatregistrationnumber)
     {
-        if(strlen($vatregistrationnumber) > 50) {
+        if(mb_strlen($vatregistrationnumber) > 50) {
             throw new \Exception('vatregistrationnumber may not exceed the length of 50 characters');
         }
         $this->vatregistrationnumber = $vatregistrationnumber;
@@ -471,7 +471,7 @@ class Relation
      */
     public function setPreamble($preamble)
     {
-        if(strlen($preamble) > 50) {
+        if(mb_strlen($preamble) > 50) {
             throw new \Exception('Preamble may not exceed the length of 50 characters');
         }
         $this->preamble = $preamble;
@@ -485,7 +485,7 @@ class Relation
      */
     public function setIban($iban)
     {
-        if(strlen($iban) > 50) {
+        if(mb_strlen($iban) > 50) {
             throw new \Exception('IBAN may not exceed the length of 50 characters');
         }
         $this->iban = $iban;
@@ -499,7 +499,7 @@ class Relation
      */
     public function setBic($bic)
     {
-        if(strlen($bic) > 50) {
+        if(mb_strlen($bic) > 50) {
             throw new \Exception('BIC may not exceed the length of 50 characters');
         }
         $this->bic = $bic;
@@ -530,7 +530,7 @@ class Relation
      */
     public function setFreeField1($freeField_1)
     {
-        if(strlen($freeField_1) > 100) {
+        if(mb_strlen($freeField_1) > 100) {
             throw new \Exception('FreeField1 may not exceed the length of 100 characters');
         }
         $this->freeField_1 = $freeField_1;
@@ -544,7 +544,7 @@ class Relation
      */
     public function setFreeField2($freeField_2)
     {
-        if(strlen($freeField_2) > 100) {
+        if(mb_strlen($freeField_2) > 100) {
             throw new \Exception('FreeField2 may not exceed the length of 100 characters');
         }
         $this->freeField_2 = $freeField_2;
@@ -558,7 +558,7 @@ class Relation
      */
     public function setFreeField3($freeField_3)
     {
-        if(strlen($freeField_3) > 100) {
+        if(mb_strlen($freeField_3) > 100) {
             throw new \Exception('FreeField3 may not exceed the length of 100 characters');
         }
         $this->freeField_3 = $freeField_3;
@@ -572,7 +572,7 @@ class Relation
      */
     public function setFreeField4($freeField_4)
     {
-        if(strlen($freeField_4) > 100) {
+        if(mb_strlen($freeField_4) > 100) {
             throw new \Exception('FreeField4 may not exceed the length of 100 characters');
         }
         $this->freeField_4 = $freeField_4;
@@ -586,7 +586,7 @@ class Relation
      */
     public function setFreeField5($freeField_5)
     {
-        if(strlen($freeField_5) > 100) {
+        if(mb_strlen($freeField_5) > 100) {
             throw new \Exception('FreeField5 may not exceed the length of 100 characters');
         }
         $this->freeField_5 = $freeField_5;
@@ -600,7 +600,7 @@ class Relation
      */
     public function setFreeField6($freeField_6)
     {
-        if(strlen($freeField_6) > 100) {
+        if(mb_strlen($freeField_6) > 100) {
             throw new \Exception('FreeField6 may not exceed the length of 100 characters');
         }
         $this->freeField_6 = $freeField_6;
@@ -614,7 +614,7 @@ class Relation
      */
     public function setFreeField7($freeField_7)
     {
-        if(strlen($freeField_7) > 100) {
+        if(mb_strlen($freeField_7) > 100) {
             throw new \Exception('FreeField7 may not exceed the length of 100 characters');
         }
         $this->freeField_7 = $freeField_7;
@@ -628,7 +628,7 @@ class Relation
      */
     public function setFreeField8($freeField_8)
     {
-        if(strlen($freeField_8) > 100) {
+        if(mb_strlen($freeField_8) > 100) {
             throw new \Exception('FreeField8 may not exceed the length of 100 characters');
         }
         $this->freeField_8 = $freeField_8;
@@ -642,7 +642,7 @@ class Relation
      */
     public function setFreeField9($freeField_9)
     {
-        if(strlen($freeField_9) > 100) {
+        if(mb_strlen($freeField_9) > 100) {
             throw new \Exception('FreeField9 may not exceed the length of 100 characters');
         }
         $this->freeField_9 = $freeField_9;
@@ -656,7 +656,7 @@ class Relation
      */
     public function setFreeField10($freeField_10)
     {
-        if(strlen($freeField_10) > 100) {
+        if(mb_strlen($freeField_10) > 100) {
             throw new \Exception('FreeField10 may not exceed the length of 100 characters');
         }
         $this->freeField_10 = $freeField_10;
@@ -680,7 +680,7 @@ class Relation
      */
     public function setLedgerAccountId($ledgerAccount_id)
     {
-        if(strlen($ledgerAccount_id) > 100) {
+        if(mb_strlen($ledgerAccount_id) > 100) {
             throw new \Exception('LedgerAccountId may not exceed the length of 100 characters');
         }
         $this->ledgerAccount_id = $ledgerAccount_id;
@@ -694,7 +694,7 @@ class Relation
      */
     public function setNoEmail($noEmail)
     {
-        if(strlen($noEmail) > 100) {
+        if(mb_strlen($noEmail) > 100) {
             throw new \Exception('NoEmail may not exceed the length of 100 characters');
         }
         $this->noEmail = $noEmail;
@@ -708,7 +708,7 @@ class Relation
      */
     public function setNewsletterGroupCount($newsletterGroupCount)
     {
-        if(strlen($newsletterGroupCount) > 100) {
+        if(mb_strlen($newsletterGroupCount) > 100) {
             throw new \Exception('NewsLetterGroupCount may not exceed the length of 100 characters');
         }
         $this->newsletterGroupCount = $newsletterGroupCount;
@@ -728,7 +728,7 @@ class Relation
             }
         }
 
-        if(strlen($this->companyName) > 100) {
+        if(mb_strlen($this->companyName) > 100) {
             throw new \Exception('companyName may not exceed the length of 100 characters');
         }
     }
@@ -742,7 +742,7 @@ class Relation
             $this->relationCode = substr($this->companyName, 0, 8) . date('mY');
         }
 
-        if(strlen($this->relationCode) > 15) {
+        if(mb_strlen($this->relationCode) > 15) {
             throw new \Exception('relationCode may not exceed the length of 15 characters');
         }
     }

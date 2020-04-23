@@ -20,7 +20,7 @@ class RelationCode {
      */
     public function __construct($relationCode)
     {
-        if(strlen($relationCode) < 16 || $relationCode === null) {
+        if(mb_strlen($relationCode) < 16 || $relationCode === null) {
             $this->relationCode = $relationCode;
             return;
         }
