@@ -501,7 +501,7 @@ class eBoekhoudenConnect
             $LastErrorCode = $rawresponse->$sub->ErrorMsg->LastErrorCode;
             $LastErrorDescription = $rawresponse->$sub->ErrorMsg->LastErrorDescription;
             if ($LastErrorCode <> '') {
-	            throw new \SoapFault($LastErrorCode, $LastErrorDescription);
+                throw new \SoapFault($LastErrorCode, $LastErrorDescription, null, $this->soapClient->__getLastRequest());
             }
         }
     }
