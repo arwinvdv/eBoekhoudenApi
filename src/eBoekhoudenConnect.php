@@ -1,12 +1,13 @@
 <?php
+
 namespace bobkosse\eBoekhouden;
 
 use bobkosse\eBoekhouden\ValueObjects\AccountLedgerCategory;
 use bobkosse\eBoekhouden\ValueObjects\AccountLedgerCode;
 use bobkosse\eBoekhouden\ValueObjects\AccountLedgerId;
-use bobkosse\eBoekhouden\ValueObjects\MutationId;
 use bobkosse\eBoekhouden\ValueObjects\Date;
 use bobkosse\eBoekhouden\ValueObjects\InvoiceNumber;
+use bobkosse\eBoekhouden\ValueObjects\MutationId;
 use bobkosse\eBoekhouden\ValueObjects\RelationCode;
 use bobkosse\eBoekhouden\ValueObjects\RelationId;
 use bobkosse\eBoekhouden\ValueObjects\RelationSearch;
@@ -38,41 +39,52 @@ class eBoekhoudenConnect
      * @param $securityCode1
      * @param $securityCode2
      * @param bool $debug
-     * @throws \Exception
+     * @throws \SoapFault
      */
     public function __construct($username, $securityCode1, $securityCode2, $debug = false)
     {
-        try {
-            $this->soapClient = new \SoapClient("https://soap.e-boekhouden.nl/soap.asmx?WSDL", $debug ? ['trace' => true] : []);
+        $this->soapClient = new \SoapClient("https://soap.e-boekhouden.nl/soap.asmx?WSDL",
+            $debug ? ['trace' => true] : []);
 
-            $params = [
-                "Username" => $username,
-                "SecurityCode1" => $securityCode1,
-                "SecurityCode2" => $securityCode2
-            ];
-            $response = $this->soapClient->__soapCall("OpenSession", array($params));
-            $this->checkforerror($response, "OpenSessionResult");
-            $this->sessionId = $response->OpenSessionResult->SessionID;
-            $this->securityCode2 = $securityCode2;
+        $params = [
+            "Username" => $username,
+            "SecurityCode1" => $securityCode1,
+            "SecurityCode2" => $securityCode2
+        ];
+        $response = $this->soapClient->__soapCall("OpenSession", array($params));
+        $this->checkforerror($response, "OpenSessionResult");
+        $this->sessionId = $response->OpenSessionResult->SessionID;
+        $this->securityCode2 = $securityCode2;
 
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
+    }
+
+    /**
+     * @param $rawresponse
+     * @param $sub
+     *
+     * @throws \SoapFault
+     */
+    private function checkforerror($rawresponse, $sub)
+    {
+        if(isset($rawresponse->$sub->ErrorMsg->LastErrorCode)) {
+            $LastErrorCode = $rawresponse->$sub->ErrorMsg->LastErrorCode;
+            $LastErrorDescription = $rawresponse->$sub->ErrorMsg->LastErrorDescription;
+            if($LastErrorCode <> '') {
+                throw new \SoapFault($LastErrorCode, $LastErrorDescription, null,
+                    $this->soapClient->__getLastRequest());
+            }
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws \SoapFault
      */
     public function __destruct()
     {
-        try {
-            $params = array(
-                "SessionID" => $this->sessionId
-            );
-            return $this->soapClient->__soapCall("CloseSession", array($params));
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
+        $params = array(
+            "SessionID" => $this->sessionId
+        );
+        return $this->soapClient->__soapCall("CloseSession", array($params));
     }
 
     /**
@@ -85,23 +97,22 @@ class eBoekhoudenConnect
 
     /**
      *
+     * @param LedgerAccount $ledgerAccount
+     * @return
+     * @throws \SoapFault
      */
     public function addLedgerAccount(LedgerAccount $ledgerAccount)
     {
-        try {
-            $params = [
-                "SecurityCode2" => $this->securityCode2,
-                "SessionID" => $this->sessionId,
-                "oGb" => $ledgerAccount->getLedgerAccountArray()
-            ];
+        $params = [
+            "SecurityCode2" => $this->securityCode2,
+            "SessionID" => $this->sessionId,
+            "oGb" => $ledgerAccount->getLedgerAccountArray()
+        ];
 
-            $response = $this->soapClient->__soapCall("AddGrootboekrekening", [$params]);
+        $response = $this->soapClient->__soapCall("AddGrootboekrekening", [$params]);
 
-            $this->checkforerror($response, "AddGrootboekrekeningResponse");
-            return $response->AddGrootboekrekeningResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
+        $this->checkforerror($response, "AddGrootboekrekeningResponse");
+        return $response->AddGrootboekrekeningResult;
     }
 
     /**
@@ -126,24 +137,20 @@ class eBoekhoudenConnect
     /**
      * @param Relation $relation
      * @return mixed
-     * @throws \Exception
+     * @throws \SoapFault
      */
     public function addRelation(Relation $relation)
     {
-        try {
-            $params = [
-                "SecurityCode2" => $this->securityCode2,
-                "SessionID" => $this->sessionId,
-                "oRel" => $relation->getEboekhoudenArray()
-            ];
+        $params = [
+            "SecurityCode2" => $this->securityCode2,
+            "SessionID" => $this->sessionId,
+            "oRel" => $relation->getEboekhoudenArray()
+        ];
 
-            $response = $this->soapClient->__soapCall("AddRelatie", [$params]);
+        $response = $this->soapClient->__soapCall("AddRelatie", [$params]);
 
-            $this->checkforerror($response, "AddRelatieResult");
-            return $response->AddRelatieResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
+        $this->checkforerror($response, "AddRelatieResult");
+        return $response->AddRelatieResult;
     }
 
     /**
@@ -156,30 +163,26 @@ class eBoekhoudenConnect
      */
     public function getInvoices($dateFrom, $toDate, $invoiceNumber = null, $relationCode = null)
     {
-        try {
-            $dateFrom = new Date($dateFrom);
-            $toDate = new Date($toDate);
-            $invoiceNumber = new InvoiceNumber($invoiceNumber);
-            $relationCode = new RelationCode($relationCode);
+        $dateFrom = new Date($dateFrom);
+        $toDate = new Date($toDate);
+        $invoiceNumber = new InvoiceNumber($invoiceNumber);
+        $relationCode = new RelationCode($relationCode);
 
-            $params = [
-                "SecurityCode2" => $this->securityCode2,
-                "SessionID" => $this->sessionId,
-                "cFilter" => [
-                    "Factuurnummer" => $invoiceNumber->__toString(),
-                    "Relatiecode" => $relationCode->__toString(),
-                    "DatumVan" => $dateFrom->__toString(),
-                    "DatumTm" => $toDate->__toString()
-                ]
-            ];
+        $params = [
+            "SecurityCode2" => $this->securityCode2,
+            "SessionID" => $this->sessionId,
+            "cFilter" => [
+                "Factuurnummer" => $invoiceNumber->__toString(),
+                "Relatiecode" => $relationCode->__toString(),
+                "DatumVan" => $dateFrom->__toString(),
+                "DatumTm" => $toDate->__toString()
+            ]
+        ];
 
-            $response = $this->soapClient->__soapCall("GetFacturen", [$params]);
+        $response = $this->soapClient->__soapCall("GetFacturen", [$params]);
 
-            $this->checkforerror($response, "GetFacturenResult");
-            return $response->GetFacturenResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
+        $this->checkforerror($response, "GetFacturenResult");
+        return $response->GetFacturenResult;
     }
 
     /**
@@ -187,38 +190,35 @@ class eBoekhoudenConnect
      * @param null $accountLedgerCode
      * @param null $category
      * @return mixed
-     * @throws \Exception
+     * @throws \SoapFault
      */
     public function getLedgerAccounts($id = null, $accountLedgerCode = null, $category = null)
     {
-        try {
-            $id = new AccountLedgerId($id);
-            $accountLedgerCode = new AccountLedgerCode($accountLedgerCode);
-            $category = new AccountLedgerCategory($category);
+        $id = new AccountLedgerId($id);
+        $accountLedgerCode = new AccountLedgerCode($accountLedgerCode);
+        $category = new AccountLedgerCategory($category);
 
-            $params = [
-                "SecurityCode2" => $this->securityCode2,
-                "SessionID" => $this->sessionId,
-                "cFilter" => [
-                    "ID" => (string)$id->toInt(),
-                    "Code" => $accountLedgerCode->__toString(),
-                    "Categorie" => $category->__toString()
-                ]
-            ];
+        $params = [
+            "SecurityCode2" => $this->securityCode2,
+            "SessionID" => $this->sessionId,
+            "cFilter" => [
+                "ID" => (string)$id->toInt(),
+                "Code" => $accountLedgerCode->__toString(),
+                "Categorie" => $category->__toString()
+            ]
+        ];
 
-            $response = $this->soapClient->__soapCall("GetGrootboekrekeningen", [$params]);
+        $response = $this->soapClient->__soapCall("GetGrootboekrekeningen", [$params]);
 
-            $this->checkforerror($response, "GetGrootboekrekeningenResult");
-            return $response->GetGrootboekrekeningenResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
+        $this->checkforerror($response, "GetGrootboekrekeningenResult");
+        return $response->GetGrootboekrekeningenResult;
     }
 
     /**
      * @param $dateFrom
      * @param $toDate
      * @return mixed
+     * @throws \SoapFault
      */
     public function getMutationsByPeriod($dateFrom, $toDate)
     {
@@ -239,6 +239,19 @@ class eBoekhoudenConnect
         ];
 
         return $this->performGetMutationsRequest($params);
+    }
+
+    /**
+     * @param $params
+     * @return mixed
+     * @throws \SoapFault
+     */
+    private function performGetMutationsRequest($params)
+    {
+        $response = $this->soapClient->__soapCall("GetMutaties", [$params]);
+
+        $this->checkforerror($response, "GetMutatiesResult");
+        return $response->GetMutatiesResult;
     }
 
     /**
@@ -313,66 +326,39 @@ class eBoekhoudenConnect
     }
 
     /**
-     * @param $params
      * @return mixed
-     * @throws \Exception
-     */
-    private function performGetMutationsRequest($params)
-    {
-        try {
-            $response = $this->soapClient->__soapCall("GetMutaties", [$params]);
-
-            $this->checkforerror($response, "GetMutatiesResult");
-            return $response->GetMutatiesResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
-    }
-
-    /**
-     * @return mixed
-     * @throws \Exception
+     * @throws \SoapFault
      */
     public function getVacantPostsDebtors()
     {
+        $params = [
+            "SecurityCode2" => $this->securityCode2,
+            "SessionID" => $this->sessionId,
+            "OpSoort" => "Debiteuren"
+        ];
 
-        try {
-            $params = [
-                "SecurityCode2" => $this->securityCode2,
-                "SessionID" => $this->sessionId,
-                "OpSoort" => "Debiteuren"
-            ];
+        $response = $this->soapClient->__soapCall("GetOpenPosten", [$params]);
 
-            $response = $this->soapClient->__soapCall("GetOpenPosten", [$params]);
-
-            $this->checkforerror($response, "GetOpenPostenResult");
-            return $response->GetOpenPostenResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
+        $this->checkforerror($response, "GetOpenPostenResult");
+        return $response->GetOpenPostenResult;
     }
 
     /**
      * @return mixed
-     * @throws \Exception
+     * @throws \SoapFault
      */
     public function getVacantPostsCreditors()
     {
+        $params = [
+            "SecurityCode2" => $this->securityCode2,
+            "SessionID" => $this->sessionId,
+            "OpSoort" => "Crediteuren"
+        ];
 
-        try {
-            $params = [
-                "SecurityCode2" => $this->securityCode2,
-                "SessionID" => $this->sessionId,
-                "OpSoort" => "Crediteuren"
-            ];
+        $response = $this->soapClient->__soapCall("GetOpenPosten", [$params]);
 
-            $response = $this->soapClient->__soapCall("GetOpenPosten", [$params]);
-
-            $this->checkforerror($response, "GetOpenPostenResult");
-            return $response->GetOpenPostenResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
+        $this->checkforerror($response, "GetOpenPostenResult");
+        return $response->GetOpenPostenResult;
     }
 
     /**
@@ -391,6 +377,19 @@ class eBoekhoudenConnect
         ];
 
         return $this->getRelations($params);
+    }
+
+    /**
+     * @param $params
+     * @return mixed
+     * @throws \SoapFault
+     */
+    private function getRelations($params)
+    {
+        $response = $this->soapClient->__soapCall("GetRelaties", [$params]);
+
+        $this->checkforerror($response, "GetRelatiesResult");
+        return $response->GetRelatiesResult;
     }
 
     /**
@@ -457,23 +456,6 @@ class eBoekhoudenConnect
     }
 
     /**
-     * @param $params
-     * @return mixed
-     * @throws \Exception
-     */
-    private function getRelations($params)
-    {
-        try {
-            $response = $this->soapClient->__soapCall("GetRelaties", [$params]);
-
-            $this->checkforerror($response, "GetRelatiesResult");
-            return $response->GetRelatiesResult;
-        } catch(\SoapFault $soapFault) {
-            throw new \Exception('<strong>Soap Exception:</strong> ' . $soapFault);
-        }
-    }
-
-    /**
      *
      */
     public function updateLedgerAccount()
@@ -487,22 +469,5 @@ class eBoekhoudenConnect
     public function updateRelation()
     {
 
-    }
-
-	/**
-	 * @param $rawresponse
-	 * @param $sub
-	 *
-	 * @throws \SoapFault
-	 */
-    private function checkforerror($rawresponse, $sub)
-    {
-        if (isset($rawresponse->$sub->ErrorMsg->LastErrorCode)) {
-            $LastErrorCode = $rawresponse->$sub->ErrorMsg->LastErrorCode;
-            $LastErrorDescription = $rawresponse->$sub->ErrorMsg->LastErrorDescription;
-            if ($LastErrorCode <> '') {
-                throw new \SoapFault($LastErrorCode, $LastErrorDescription, null, $this->soapClient->__getLastRequest());
-            }
-        }
     }
 }
