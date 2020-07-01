@@ -55,7 +55,6 @@ class eBoekhoudenConnect
         $this->checkforerror($response, "OpenSessionResult");
         $this->sessionId = $response->OpenSessionResult->SessionID;
         $this->securityCode2 = $securityCode2;
-
     }
 
     /**
@@ -74,6 +73,13 @@ class eBoekhoudenConnect
                     $this->soapClient->__getLastRequest());
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDebugInfo(){
+        return 'Last SOAP request: '.$this->soapClient->__getLastRequest();
     }
 
     /**
