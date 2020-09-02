@@ -1,18 +1,19 @@
 {
-    "name": "innovato/eboekhouden",
-    "description": "PHP Wrapper for eBoekhouden SOAP server. Fork of bobkosse/eBoekhouden",
-    "type": "library",
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=7.0.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "6.3.*",
-        "vladahejda/phpunit-assert-exception": "dev-master"
-    },
-    "autoload": {
-        "psr-4": {
-            "bobkosse\\eBoekhouden\\": "src"
-        }
+  "name": "innovato/eboekhouden",
+  "description": "PHP Wrapper for eBoekhouden SOAP server. Fork of bobkosse/eBoekhouden",
+  "type": "library",
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.0.0",
+    "ext-soap": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "6.3.*",
+    "vladahejda/phpunit-assert-exception": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "bobkosse\\eBoekhouden\\": "src"
     }
+  }
 }

@@ -116,7 +116,7 @@ class Relation
     /**
      * @var string
      */
-    protected $companyPerson = 'C';
+    protected $companyPerson = 'B';
     /**
      * @var
      */
@@ -513,14 +513,14 @@ class Relation
      */
     public function setCompanyPerson($companyPerson)
     {
-        $acceptedValues = ['P', 'C'];
+        $acceptedValues = ['B', 'C'];
 
         if(in_array($companyPerson, $acceptedValues)) {
             $this->companyPerson = $companyPerson;
             return $this;
         }
 
-        throw new \Exception('CompanyPerson may only have the values P (for Person) or C (for Company)');
+        throw new \Exception('CompanyPerson may only have the values P (for Person) or B (for Company)');
     }
 
     /**
