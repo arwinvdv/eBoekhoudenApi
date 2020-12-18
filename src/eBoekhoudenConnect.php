@@ -38,10 +38,11 @@ class eBoekhoudenConnect
      * @param $username
      * @param $securityCode1
      * @param $securityCode2
+     * @param $source string required! Example: "SK-EB" (company: Skillsource, product e-Boekhouden.nl)
      * @param bool $debug
      * @throws \SoapFault
      */
-    public function __construct($username, $securityCode1, $securityCode2, $debug = false)
+    public function __construct($username, $securityCode1, $securityCode2, $source, $debug = false)
     {
         $this->soapClient = new \SoapClient("https://soap.e-boekhouden.nl/soap.asmx?WSDL",
             $debug ? ['trace' => true] : []);
@@ -49,7 +50,8 @@ class eBoekhoudenConnect
         $params = [
             "Username" => $username,
             "SecurityCode1" => $securityCode1,
-            "SecurityCode2" => $securityCode2
+            "SecurityCode2" => $securityCode2,
+            "Source" => $source
         ];
         $response = $this->soapClient->__soapCall("OpenSession", array($params));
         $this->checkforerror($response, "OpenSessionResult");

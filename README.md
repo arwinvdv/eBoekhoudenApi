@@ -11,7 +11,7 @@ Login to your account on eBoekhouden and go to Beheer -> Instellingen -> API/SOA
  
 Call the eBoekhoudenConnect class as follow:
 
-```$eBoekhouden = new eBoekhoudenConnect("Username", "SecurityCode1", "SecurityCode2");```
+```$eBoekhouden = new eBoekhoudenConnect("Username", "SecurityCode1", "SecurityCode2", "Source-Name");```
 
 ## Usage
 After that you can use the class as described below:
